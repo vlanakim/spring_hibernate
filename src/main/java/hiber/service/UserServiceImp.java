@@ -1,11 +1,13 @@
 package hiber.service;
 
+import hiber.Car;
 import hiber.dao.UserDao;
 import hiber.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
@@ -26,4 +28,26 @@ public class UserServiceImp implements UserService {
       return userDao.listUsers();
    }
 
+   @Transactional
+   @Override
+   public void addUserWithCar(String firstName, String lastName, String email, String model, int series) {
+       Car car = new Car(model, series);
+       User user = new User(firstName, lastName, email, car);
+      userDao.add(user);
+   }
+
+   @Transactional(readOnly = true)
+   @Override
+   public List<User> getUserByCar(String model, int series) {
+      List<User> users = userDao.getUserByCar(model, series);
+
+      if (users.isEmpty()) {
+         System.out.println("Пользователь с указанной машиной не найден.");
+      } else {
+         for (User user : users) {
+            System.out.println("Найден пользователь: " + user.getFirstName() + " " + user.getLastName());
+         }
+      }
+      return users;
+   }
 }
