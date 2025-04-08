@@ -1,7 +1,5 @@
 package hiber.model;
 
-import hiber.Car;
-
 import javax.persistence.*;
 
 @Entity

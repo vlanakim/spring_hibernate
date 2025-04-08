@@ -1,6 +1,4 @@
-package hiber;
-
-import hiber.model.User;
+package hiber.model;
 
 import javax.persistence.*;
 
